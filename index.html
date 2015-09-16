@@ -9,8 +9,18 @@
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
 
-	var width = 960;
-    var height = 1160;
+	var width = 1260;
+    var height = 2160;
+
+    var projection = d3.geo.albers()
+    .rotate([-60, 0])
+    .center([29, -91])
+    .parallels([50, 60])
+    .scale(940)
+    .translate([width / 2, height / 2]);
+
+    var path = d3.geo.path()
+    .projection(projection);
 
 	var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -21,7 +31,7 @@
 	  console.log(map.objects);
 	  svg.append("path")
 	      .datum(topojson.feature(map, map.objects.tibet))
-	      .attr("d", d3.geo.path().projection(d3.geo.mercator().scale(250)));
+	      .attr("d", path);
 	});
 
 </script>
