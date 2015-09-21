@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+	#tibet {
+		fill: #aad4e5;
+		/*background: url("./shaded-relief.png");*/
+		stroke: black;
+		stroke-dasharray: 5, 2;
+	}
+
+	body {
+		background-color: black;
+		display: inline-block;
+	}
+
+	.point {
+		fill: red;
+	}
+
+	.nav {
+		display: inline;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+
+	.bar {
+		display: inline-block;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 200px;
+		height: 100px;
+		margin: auto;
+	}
+
+</style>
+<body>
+	
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script>
+	$width = $(window).width();
+	$height = $(window).height();
+	var dataset = [
+	{date: 1, nav: [{lat: 92, lon: 31},	{lat: 89, lon: 32}, {lat: 89, lon: 35}, {lat: 91, lon: 32}]},
+	{date: 2, nav: [{lat: 88, lon: 31},	{lat: 89, lon: 34}, {lat: 90, lon: 33}, {lat: 90, lon: 34}]},
+	{date: 3, nav: [{lat: 94, lon: 31},	{lat: 94, lon: 33}, {lat: 91, lon: 33}, {lat: 91, lon: 34}]}
+	]
+
+    var projection = d3.geo.albers()
+    .rotate([-100, 0])
+    .center([0, 33.5])
+    .parallels([50, 60])
+    .scale(2050)
+    .translate([$width / 2, $height / 2]);
+
+    var path = d3.geo.path()
+    .projection(projection);
+
+	var svg = d3.select("body").append("svg")
+    .attr("width", 1000)
+    .attr("height", 625);
+
+    var bio = d3.select("body").append("svg")
+    .attr("width", 400)
+    .attr("height", 625);
+
+	d3.json("finmap.json", function(error, map) {
+	  if (error) return console.error(error);
+	  console.log(map.objects);
+	  svg.append("path")
+	    	.datum(topojson.feature(map, map.objects.regions))
+	    	.attr("d", path)
+	    	.attr("id", "tibet");
+	  })
+	var filter = svg.append("defs")
+		    .append("filter")
+		    .attr("id", "blur")
+		    .append("feGaussianBlur")
+		    .attr("stdDeviation", 8);
+
+
+	var i = 0;
+	function startTimer() {
+		setInterval(function() {
+			updateMap(i);
+			i++;			
+		}, 3000)
+	}
+
+	function updateMap(date) {
+		d3.select("svg").selectAll("circle.point")
+			.remove();
+		d3.select("svg").selectAll("circle.point")
+	  		.data(dataset[date].nav)
+	  		.enter()
+	  		.append("circle")
+	  		.attr("class", "point")
+	  		.attr("r", 1)
+	  		.attr("transform", function(d) {
+	  			return "translate(" + projection([d.lat, d.lon]) + ")";})
+	  		.transition().duration(1500).attr("r", 5);
+	}
+
+
+
+</script>
+	<div id="bar">
+		<div class="nav">
+			<input name="1"
+					type="button"
+					value="1"
+					onclick="updateMap(0)" />
+		</div>
+		<div class="nav">
+			<input name="2"
+					type="button"
+					value="2"
+					onclick="updateMap(1)" />
+		</div>
+		<div class="nav">
+			<input name="3"
+					type="button"
+					value="3"
+					onclick="updateMap(2)" />
+		</div>
+	</div>
+
+</body>
+</html>
