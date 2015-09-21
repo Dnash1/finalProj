@@ -52,36 +52,36 @@
 	]
 
     var projection = d3.geo.albers()
-    .rotate([-100, 0])
-    .center([0, 33.5])
-    .parallels([50, 60])
-    .scale(2050)
-    .translate([$width / 2, $height / 2]);
+	    .rotate([-100, 0])
+	    .center([0, 33.5])
+	    .parallels([50, 60])
+	    .scale(2050)
+	    .translate([$width / 2, $height / 2]);
 
     var path = d3.geo.path()
-    .projection(projection);
+ 	   .projection(projection);
 
 	var svg = d3.select("body").append("svg")
-    .attr("width", 1000)
-    .attr("height", 625);
+	    .attr("width", 1000)
+	    .attr("height", 625);
 
-    var bio = d3.select("body").append("svg")
-    .attr("width", 400)
-    .attr("height", 625);
+    var bio = d3.select("body").append("svgx")
+	    .attr("width", 400)
+	    .attr("height", 625);
 
 	d3.json("finmap.json", function(error, map) {
 	  if (error) return console.error(error);
 	  console.log(map.objects);
 	  svg.append("path")
-	    	.datum(topojson.feature(map, map.objects.regions))
-	    	.attr("d", path)
-	    	.attr("id", "tibet");
+	    .datum(topojson.feature(map, map.objects.regions))
+	    .attr("d", path)
+	    .attr("id", "tibet");
 	  })
 	var filter = svg.append("defs")
-		    .append("filter")
-		    .attr("id", "blur")
-		    .append("feGaussianBlur")
-		    .attr("stdDeviation", 8);
+	    .append("filter")
+	    .attr("id", "blur")
+	    .append("feGaussianBlur")
+		.attr("stdDeviation", 8);
 
 
 	var i = 0;
@@ -101,6 +101,16 @@
 	  		.append("circle")
 	  		.attr("class", "point")
 	  		.attr("r", 1)
+	  		.on("mouseover", function() {
+	  			d3.select(this).style("fill", "white")
+	  			d3.select("svgx").append("image")
+	  				.attr("xlink:href", "https://avatars3.githubusercontent.com/u/13007992?v=3&s=460")
+	  				.attr("width", "100%")
+	  				.attr("height", "100%")
+	  		})
+	  		.on("mouseout", function() {
+	  			d3.select(this).style("fill", "red")
+	  		})
 	  		.attr("transform", function(d) {
 	  			return "translate(" + projection([d.lat, d.lon]) + ")";})
 	  		.transition().duration(1500).attr("r", 5);
@@ -129,6 +139,7 @@
 					onclick="updateMap(2)" />
 		</div>
 	</div>
+
 
 </body>
 </html>
