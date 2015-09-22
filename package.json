@@ -1,0 +1,24 @@
+{
+  "name": "finalproj",
+  "version": "1.0.0",
+  "description": "## Objective To create a visual history of the Tibetan Resistance movement from first contact with the People's Liberation Army up to the present day.",
+  "main": "app.js",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dnash1/finalProj.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dnash1/finalProj/issues"
+  },
+  "homepage": "https://github.com/Dnash1/finalProj#readme"
+}
