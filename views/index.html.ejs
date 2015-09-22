@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+</head>
 <style>
+	.pure-g{
+	  background: black;
+	  width:70%;
+	  margin-left: auto;
+	  margin-right: auto;
+	  text-align: center;
+	}
+
 	#tibet {
 		fill: #aad4e5;
-		/*background: url("./shaded-relief.png");*/
 		stroke: black;
 		stroke-dasharray: 5, 2;
 	}
@@ -19,26 +30,19 @@
 
 	.nav {
 		display: inline;
-		left: 0;
-		right: 0;
-		margin: auto;
 	}
 
 	.bar {
-		display: inline-block;
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		width: 200px;
+		width: 70%;
 		height: 100px;
-		margin: auto;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 </style>
 <body>
-	
+
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -77,9 +81,7 @@
 	    .attr("width", 400)
 	    .attr("height", 625);
 
-	d3.json("finmap.json", function(error, map) {
-	  if (error) return console.error(error);
-	  console.log(map.objects);
+	d3.json("finmap.json", function(map) {
 	  svg.append("path")
 	    .datum(topojson.feature(map, map.objects.regions))
 	    .attr("d", path)
@@ -103,61 +105,92 @@
 		.data(phtext)
 		.enter();
 
-	function updateMap(date) {
+	function updateMap(y) {
 		d3.select("svg").selectAll("circle.point")
 			.remove();
-		d3.select("svg").selectAll("circle.point")
-	  		.data(dataset[date].nav)
-	  		.enter()
-	  		.append("circle")
-	  		.attr("class", "point")
-	  		.attr("r", 1)
-	  		.on("mouseover", function() {
-	  			d3.select(this).style("fill", "white")
-	  			d3.select("#bw").append("svg:image")
-	  				.attr("xlink:href", "https://avatars3.githubusercontent.com/u/13007992?v=3&s=460")
-	  				.attr("width", 200)
-	  				.attr("height", 200)
-	  				.attr("opacity", 0)
-	  				.attr("x", "50%")
-	  				.transition().duration(1500).attr("opacity", 10);
-	  			d3.select("#bw").append("text")
-	  				.attr("y", 50)
-	  				.text(phtext.name)
-	  				.style("fill", "white");
-	  		})
-	  		.on("mouseout", function() {
-	  			d3.select(this).style("fill", "red")
-	  		})
-	  		.attr("transform", function(d) {
-	  			return "translate(" + projection([d.lat, d.lon]) + ")";})
-	  		.transition().duration(1500).attr("r", 5);
+		d3.json("data.json", function(error, db) {
+			if (error) {console.log(error)} else
+			console.log(db);
+			d3.select("svg").selectAll("circle.point")
+		  		.data(db.stuff[y].incidents)
+		  		.enter()
+		  		.append("circle")
+		  		.attr("class", "point")
+		  		.attr("r", 1)
+		  		.html(function(d) {return d.id} )
+		  		.on("mouseover", function() {
+		  			d3.select("#bw").selectAll("image").remove();
+		  			d3.select("#bw").selectAll("text").remove();
+		  			var x = this.innerHTML;
+		  			console.log(x);
+		  			d3.select(this).style("fill", "white")
+		  			d3.select("#bw").append("svg:image")
+		  				.data(db.stuff[y].incidents)
+		  				.attr("xlink:href", function(d, i) {return db.stuff[y].incidents[x].img} )
+		  				.attr("width", "50%")
+		  				.attr("height", "50%")
+		  				.attr("opacity", 0)
+		  				.attr("x", 25)
+		  				.transition().duration(1500).attr("opacity", 10);
+		  			d3.select("#bw").append("text")
+		  				.data(db.stuff[y].incidents)
+		  				.attr("y", 300)
+		  				.attr("x", 25)
+		  				.attr("opacity", 0)
+		  				.text(function(d, i) {return db.stuff[y].incidents[x].name})
+		  				.style("fill", "white")
+		  				.transition().duration(1500).attr("opacity", 10);
+		  			d3.select("#bw").append("text")
+		  				.data(db.stuff[y].incidents)
+		  				.attr("y", 320)
+		  				.attr("x", 25)
+		  				.attr("opacity", 0)
+		  				.text(function(d, i) {return db.stuff[y].incidents[x].age})
+		  				.style("fill", "white")
+		  				.transition().duration(1500).attr("opacity", 10);
+		  			d3.select("#bw").append("text")
+		  				.data(db.stuff[y].incidents)
+		  				.attr("y", 340)
+		  				.attr("x", 25)
+		  				.attr("opacity", 0)
+		  				.text(function(d, i) {return db.stuff[y].incidents[x].date})
+		  				.style("fill", "white")
+		  				.transition().duration(1500).attr("opacity", 10);
+		  			d3.select("#bw").append("text")
+		  				.data(db.stuff[y].incidents)
+		  				.attr("y", 360)
+		  				.attr("x", 25)
+		  				.attr("opacity", 0)
+		  				.text(function(d, i) {return db.stuff[y].incidents[x].status})
+		  				.style("fill", "white")
+		  				.transition().duration(1500).attr("opacity", 10);
+		  		})
+		  		.on("mouseout", function() {
+		  			d3.select(this).style("fill", "red")
+		  		})
+		  		.attr("transform", function(d) {
+		  			return "translate(" + projection([d.lat, d.lon]) + ")";})
+		  		.transition().duration(1500).attr("r", 5);
+		})
 	}
 
 
-
 </script>
-	<div id="bar">
-		<div class="nav">
-			<input name="1"
-					type="button"
-					value="1"
-					onclick="updateMap(0)" />
-		</div>
-		<div class="nav">
-			<input name="2"
-					type="button"
-					value="2"
-					onclick="updateMap(1)" />
-		</div>
-		<div class="nav">
-			<input name="3"
-					type="button"
-					value="3"
-					onclick="updateMap(2)" />
-		</div>
+<div class="pure-g">
+	<div class="pure-u-1-1 footer">
+		<ul>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(2)">2013</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(1)">2014</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(0)">2015</button>
+			</li>
+		</ul>
 	</div>
-
+</div>
 
 </body>
 </html>
