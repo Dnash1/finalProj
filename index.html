@@ -51,6 +51,12 @@
 	{date: 3, nav: [{lat: 94, lon: 31},	{lat: 94, lon: 33}, {lat: 91, lon: 33}, {lat: 91, lon: 34}]}
 	]
 
+	var phtext = {
+	name: "Name",
+	age: "Age",
+	blah: "Blah bloo"
+	}
+
     var projection = d3.geo.albers()
 	    .rotate([-100, 0])
 	    .center([0, 33.5])
@@ -62,10 +68,12 @@
  	   .projection(projection);
 
 	var svg = d3.select("body").append("svg")
+		.attr("id", "mw")
 	    .attr("width", 1000)
 	    .attr("height", 625);
 
-    var bio = d3.select("body").append("svgx")
+    var bio = d3.select("body").append("svg")
+    	.attr("id", "bw")
 	    .attr("width", 400)
 	    .attr("height", 625);
 
@@ -91,6 +99,9 @@
 			i++;			
 		}, 3000)
 	}
+	var biotext = svg.selectAll("text")
+		.data(phtext)
+		.enter();
 
 	function updateMap(date) {
 		d3.select("svg").selectAll("circle.point")
@@ -103,10 +114,17 @@
 	  		.attr("r", 1)
 	  		.on("mouseover", function() {
 	  			d3.select(this).style("fill", "white")
-	  			d3.select("svgx").append("image")
+	  			d3.select("#bw").append("svg:image")
 	  				.attr("xlink:href", "https://avatars3.githubusercontent.com/u/13007992?v=3&s=460")
-	  				.attr("width", "100%")
-	  				.attr("height", "100%")
+	  				.attr("width", "50%")
+	  				.attr("height", "50%")
+	  				.attr("opacity", 0)
+	  				.transition().duration(1500).attr("opacity", 10);
+	  			d3.select("#bw").append("text")
+	  				.attr("y", 50)
+	  				.text(phtext.name)
+	  				.style("fill", "white");
+
 	  		})
 	  		.on("mouseout", function() {
 	  			d3.select(this).style("fill", "red")
