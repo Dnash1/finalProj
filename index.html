@@ -15,7 +15,7 @@
 
 	#tibet {
 		fill: #aad4e5;
-		stroke: white;
+		stroke: black;
 		stroke-dasharray: 5, 2;
 	}
 
@@ -43,8 +43,8 @@
 </style>
 <body>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script>
 	$width = $(window).width();
@@ -85,9 +85,6 @@
 	  svg.append("path")
 	    .datum(topojson.feature(map, map.objects.regions))
 	    .attr("d", path)
-	    .transition()
-	    	.duration(2000)
-	    	.ease("linear")
 	    .attr("id", "tibet");
 	  })
 	var filter = svg.append("defs")

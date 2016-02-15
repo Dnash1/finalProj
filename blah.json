@@ -1,0 +1,7 @@
+{
+	"stuff":[
+{"date": 1, "nav": [{"name": "a", "lat": 92, "lon": 31},	{"name": "b", "lat": 89, "lon": 32}, {"name": "c", "lat": 89, "lon": 35}, {"name": "d", "lat": 91, "lon": 32}]},
+{"date": 2, "nav": [{"name": "e", "lat": 88, "lon": 31},	{"name": "f", "lat": 89, "lon": 34}, {"name": "g", "lat": 90, "lon": 33}, {"name": "h", "lat": 90, "lon": 34}]},
+{"date": 3, "nav": [{"name": "i", "lat": 94, "lon": 31},	{"name": "j", "lat": 94, "lon": 33}, {"name": "k", "lat": 91, "lon": 33}, {"id": "l", "lat": 91, "lon": 34}]}
+	]
+}
