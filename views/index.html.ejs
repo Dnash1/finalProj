@@ -73,6 +73,18 @@
 	<div class="pure-u-1-1 footer">
 		<ul>
 			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(7)">1998</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(6)">2006</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(5)">2011</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(4)">2012</button>
+			</li>
+			<li class="nav">
 				<button class="pure-button button-xsmall" onclick="updateMap(3)">2013</button>
 			</li>
 			<li class="nav">
@@ -168,6 +180,7 @@
 		  		.attr("r", 1)
 		  		.html(function(d) {return d.id} )
 		  		.on("mouseover", function() {
+		  			d3.select(this).style("fill", "black").attr("r", 5)
 		  			var x = this.innerHTML;
 		  			d3.select("#biobox").selectAll("img").remove();
 		  			d3.select("#biobox")
@@ -177,6 +190,7 @@
 		  				.data(db.stuff[y].incidents)
 		  				.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
 		  				.attr("alt", " ")
+		  				.attr("class", "pure-img")
 		  				.attr("width", "50%")
 		  				.attr("height", "50%");
 		  			
@@ -262,11 +276,11 @@
 		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info});
 		  		})
 		  		.on("mouseout", function() {
-		  			d3.select(this).style("fill", "red")
+		  			d3.select(this).style("fill", "red").attr("r", 3);
 		  		})
 		  		.attr("transform", function(d) {
 		  			return "translate(" + projection([d.lat, d.lon]) + ")";})
-		  		.transition().duration(1500).attr("r", 5);
+		  		.transition().duration(1500).attr("r", 3);
 		})
 	}
 
