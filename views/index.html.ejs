@@ -2,10 +2,15 @@
 <meta charset="utf-8">
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
 </head>
 <style>
-	.pure-g{
+	.footer{
 	  background: black;
 	  width:70%;
 	  margin-left: auto;
@@ -14,14 +19,24 @@
 	}
 
 	#tibet {
-		fill: #aad4e5;
+		fill: black;
 		stroke: white;
 		stroke-dasharray: 5, 2;
 	}
 
+	#mapbox {
+		height: 550px;
+		padding-top: 20px;
+	}
+
+	#biobox {
+		height: 550px;
+		padding-top: 20px;
+	}
+
 	body {
 		background-color: black;
-		display: inline-block;
+
 	}
 
 	.point {
@@ -32,24 +47,41 @@
 		display: inline;
 	}
 
-	.bar {
-		width: 70%;
-		height: 100px;
-		text-align: center;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
 </style>
 <body>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<div class="pure-g main">
+	<div id="mapbox" class="pure-u-16-24"></div>
+	<div id="biobox" class="pure-u-8-24"></div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-1-1 footer">
+		<ul>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(2)">2013</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(1)">2014</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(0)">2015</button>
+			</li>
+		</ul>
+	</div>
+</div>	
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script>
-	$width = $(window).width();
-	$height = $(window).height();
+	// $width = $("#mapbox").width();
+	// $height = $("#mapbox").height();
+	// console.log(($width / 3) * 2);
+	// console.log($height);
+
+	var margin = {top: 10, left: 10, bottom: 10, right: 10}
+	  , width = parseInt(d3.select('#mapbox').style('width'))
+	  , width = width - margin.left - margin.right
+	  , mapRatio = .5
+	  , height = width * mapRatio;
+
 	var dataset = [
 	{date: 1, nav: [{lat: 92, lon: 31},	{lat: 89, lon: 32}, {lat: 89, lon: 35}, {lat: 91, lon: 32}]},
 	{date: 2, nav: [{lat: 88, lon: 31},	{lat: 89, lon: 34}, {lat: 90, lon: 33}, {lat: 90, lon: 34}]},
@@ -63,34 +95,33 @@
 	}
 
     var projection = d3.geo.albers()
-	    .rotate([-100, 0])
+	    .rotate([-95, 0])
 	    .center([0, 33.5])
 	    .parallels([50, 60])
-	    .scale(2050)
-	    .translate([$width / 2, $height / 2]);
+	    .scale(width * 1.5)
+	    .translate([width / 2, height / 2]);
 
     var path = d3.geo.path()
  	   .projection(projection);
 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#mapbox").append("svg")
 		.attr("id", "mw")
-	    .attr("width", 1000)
-	    .attr("height", 625);
+	    .attr("width", "100%")
+	    .attr("height", "100%")
+	    .append("g");
 
-    var bio = d3.select("body").append("svg")
+    var bio = d3.select("#biobox").append("svg")
     	.attr("id", "bw")
-	    .attr("width", 400)
-	    .attr("height", 625);
+	    .attr("width", "100%")
+	    .attr("height", "100%");
 
 	d3.json("finmap.json", function(map) {
 	  svg.append("path")
 	    .datum(topojson.feature(map, map.objects.regions))
 	    .attr("d", path)
-	    .transition()
-	    	.duration(2000)
-	    	.ease("linear")
 	    .attr("id", "tibet");
 	  })
+
 	var filter = svg.append("defs")
 	    .append("filter")
 	    .attr("id", "blur")
@@ -180,21 +211,7 @@
 
 
 </script>
-<div class="pure-g">
-	<div class="pure-u-1-1 footer">
-		<ul>
-			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(2)">2013</button>
-			</li>
-			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(1)">2014</button>
-			</li>
-			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(0)">2015</button>
-			</li>
-		</ul>
-	</div>
-</div>
 
 </body>
+	<script src="main.js"></script>
 </html>
