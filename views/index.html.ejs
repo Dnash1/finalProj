@@ -20,7 +20,7 @@
 
 	#tibet {
 		fill: black;
-		stroke: white;
+		stroke: black;
 		stroke-dasharray: 5, 2;
 	}
 
@@ -95,10 +95,10 @@
 	}
 
     var projection = d3.geo.albers()
-	    .rotate([-95, 0])
+	    .rotate([-95, -1.5])
 	    .center([0, 33.5])
 	    .parallels([50, 60])
-	    .scale(width * 1.5)
+	    .scale(width * 1.75)
 	    .translate([width / 2, height / 2]);
 
     var path = d3.geo.path()
@@ -119,15 +119,12 @@
 	  svg.append("path")
 	    .datum(topojson.feature(map, map.objects.regions))
 	    .attr("d", path)
-	    .attr("id", "tibet");
+	    .attr("id", "tibet")
+	    .transition().duration(4500).style("stroke", "white")
+	    .delay(500)
+	    .transition().duration(4500).style("fill", "brown");
 	  })
-
-	var filter = svg.append("defs")
-	    .append("filter")
-	    .attr("id", "blur")
-	    .append("feGaussianBlur")
-		.attr("stdDeviation", 8);
-
+		
 
 	var i = 0;
 	function startTimer() {
