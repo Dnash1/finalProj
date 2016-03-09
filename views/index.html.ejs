@@ -73,10 +73,7 @@
 	<div class="pure-u-1-1 footer">
 		<ul>
 			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(7)">1998</button>
-			</li>
-			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(6)">2006</button>
+				<button class="pure-button button-xsmall" onclick="updateMap(6)">2009</button>
 			</li>
 			<li class="nav">
 				<button class="pure-button button-xsmall" onclick="updateMap(5)">2011</button>
@@ -95,6 +92,9 @@
 			</li>
 			<li class="nav">
 				<button class="pure-button button-xsmall" onclick="updateMap(0)">2016</button>
+			</li>
+			<li class="nav">
+				<button class="pure-button button-xsmall" onclick="allPoints()">All Years</button>
 			</li>
 		</ul>
 	</div>
@@ -153,22 +153,31 @@
 	    .transition().duration(4500).style("stroke", "white")
 	    .transition().duration(4500).style("fill", "#aad4e5");
 	  })
-		
 
-	var i = 0;
-	function startTimer() {
-		setInterval(function() {
-			updateMap(i);
-			i++;			
-		}, 3000)
-	}
 	var biotext = svg.selectAll("text")
 		.data(phtext)
 		.enter();
 
-	function updateMap(y) {
+	function allPoints() {
+		clearMap();
+		for(var i = 4; i < 4; i++) {
+			setPoints(i);
+		}
+		
+
+	}
+
+	function clearMap() {
 		d3.select("svg").selectAll("circle.point")
 			.remove();
+	}
+
+	function updateMap(o) {
+		clearMap();
+		setPoints(o);
+	}
+
+	function setPoints(y) {
 		d3.json("data.json", function(error, db) {
 			if (error) {console.log(error)} else
 			console.log(db);
