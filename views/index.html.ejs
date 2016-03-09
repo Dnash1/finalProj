@@ -93,9 +93,9 @@
 			<li class="nav">
 				<button class="pure-button button-xsmall" onclick="updateMap(0)">2016</button>
 			</li>
-			<li class="nav">
-				<button class="pure-button button-xsmall" onclick="allPoints()">All Years</button>
-			</li>
+			<!-- <li class="nav">
+				<button class="pure-button button-xsmall" onclick="updateMap(7)">All Years</button>
+			</li> -->
 		</ul>
 	</div>
 </div>	
@@ -181,48 +181,100 @@
 		d3.json("data.json", function(error, db) {
 			if (error) {console.log(error)} else
 			console.log(db);
-			d3.select("svg").selectAll("circle.point")
-		  		.data(db.stuff[y].incidents)
-		  		.enter()
-		  		.append("circle")
-		  		.attr("class", "point")
-		  		.attr("r", 1)
-		  		.html(function(d) {return d.id} )
-		  		.on("mouseover", function() {
-		  			d3.select(this).style("fill", "black").attr("r", 5)
-		  			var x = this.innerHTML;
-		  			d3.select("#biobox").selectAll("img").remove();
-		  			d3.select("#biobox")
-		  				.style("opacity", 0)
-		  				.transition().duration(1500).style("opacity", 10);
-		  			d3.select("#biobox").insert("img", "#nam")
-		  				.data(db.stuff[y].incidents)
-		  				.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-		  				.attr("alt", " ")
-		  				.attr("class", "pure-img")
-		  				.attr("width", "50%")
-		  				.attr("height", "50%");
-		  			
-		  			// d3.select("#bimg")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-		  			// 	.attr("height", "50%")
-		  			// 	.attr("width", "50%");
-		  			d3.select("#nmplt")
-		  				.data(db.stuff[y].incidents)
-		  				.text(function(d, i) {return db.stuff[y].incidents[x].name});
-		  			d3.select("#ageplt")
-		  				.data(db.stuff[y].incidents)
-		  				.text(function(d, i) {return db.stuff[y].incidents[x].age});
-		  			d3.select("#dateplt")
-		  				.data(db.stuff[y].incidents)
-		  				.text(function(d, i) {return db.stuff[y].incidents[x].date});
-		  			d3.select("#stplt")
-		  				.data(db.stuff[y].incidents)
-		  				.text(function(d, i) {return db.stuff[y].incidents[x].status});
-		  			d3.select("#infplt")
-		  				.data(db.stuff[y].incidents)
-		  				.text(function(d, i) {return db.stuff[y].incidents[x].info});
+			if (y === 7) {
+				for (var i = 0; i < 6; i++) {
+					d3.select("svg").selectAll("circle.point")
+			  		.data(db.stuff[i].incidents)
+			  		.enter()
+			  		.append("circle")
+			  		.attr("class", "point")
+			  		.attr("r", 1)
+			  		.html(function(d) {return d.id} )
+			  		.on("mouseover", function() {
+			  			d3.select(this).style("fill", "black").attr("r", 5)
+			  			var x = this.innerHTML;
+			  			d3.select("#biobox").selectAll("img").remove();
+			  			d3.select("#biobox")
+			  				.style("opacity", 0)
+			  				.transition().duration(1500).style("opacity", 10);
+			  			d3.select("#biobox").insert("img", "#nam")
+			  				.data(db.stuff[i].incidents)
+			  				.attr("src", function(d, i) {return db.stuff[i].incidents[x].img} )
+			  				.attr("alt", " ")
+			  				.attr("class", "pure-img")
+			  				.attr("width", "50%")
+			  				.attr("height", "50%");
+			  			d3.select("#nmplt")
+			  				.data(db.stuff[i].incidents)
+			  				.text(function(d, i) {return db.stuff[i].incidents[x].name});
+			  			d3.select("#ageplt")
+			  				.data(db.stuff[i].incidents)
+			  				.text(function(d, i) {return db.stuff[i].incidents[x].age});
+			  			d3.select("#dateplt")
+			  				.data(db.stuff[i].incidents)
+			  				.text(function(d, i) {return db.stuff[i].incidents[x].date});
+			  			d3.select("#stplt")
+			  				.data(db.stuff[i].incidents)
+			  				.text(function(d, i) {return db.stuff[i].incidents[x].status});
+			  			d3.select("#infplt")
+			  				.data(db.stuff[i].incidents)
+			  				.text(function(d, i) {return db.stuff[i].incidents[x].info});
+			  		})
+			  		.on("mouseout", function() {
+			  			d3.select(this).style("fill", "red").attr("r", 3);
+			  		})
+			  		.attr("transform", function(d) {
+			  			return "translate(" + projection([d.lat, d.lon]) + ")";})
+			  		.transition().duration(1500).attr("r", 3);
+				}
+			} else {
+				d3.select("svg").selectAll("circle.point")
+			  		.data(db.stuff[y].incidents)
+			  		.enter()
+			  		.append("circle")
+			  		.attr("class", "point")
+			  		.attr("r", 1)
+			  		.html(function(d) {return d.id} )
+			  		.on("mouseover", function() {
+			  			d3.select(this).style("fill", "black").attr("r", 5)
+			  			var x = this.innerHTML;
+			  			d3.select("#biobox").selectAll("img").remove();
+			  			d3.select("#biobox")
+			  				.style("opacity", 0)
+			  				.transition().duration(1500).style("opacity", 10);
+			  			d3.select("#biobox").insert("img", "#nam")
+			  				.data(db.stuff[y].incidents)
+			  				.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
+			  				.attr("alt", " ")
+			  				.attr("class", "pure-img")
+			  				.attr("width", "50%")
+			  				.attr("height", "50%");
+			  			d3.select("#nmplt")
+			  				.data(db.stuff[y].incidents)
+			  				.text(function(d, i) {return db.stuff[y].incidents[x].name});
+			  			d3.select("#ageplt")
+			  				.data(db.stuff[y].incidents)
+			  				.text(function(d, i) {return db.stuff[y].incidents[x].age});
+			  			d3.select("#dateplt")
+			  				.data(db.stuff[y].incidents)
+			  				.text(function(d, i) {return db.stuff[y].incidents[x].date});
+			  			d3.select("#stplt")
+			  				.data(db.stuff[y].incidents)
+			  				.text(function(d, i) {return db.stuff[y].incidents[x].status});
+			  			d3.select("#infplt")
+			  				.data(db.stuff[y].incidents)
+			  				.text(function(d, i) {return db.stuff[y].incidents[x].info});
+			  		})
+			  		.on("mouseout", function() {
+			  			d3.select(this).style("fill", "red").attr("r", 3);
+			  		})
+			  		.attr("transform", function(d) {
+			  			return "translate(" + projection([d.lat, d.lon]) + ")";})
+			  		.transition().duration(1500).attr("r", 3);
+			  	}
+		})
+	}
+
 
 		  			// d3.select("#bw").selectAll("image").remove();
 		  			// d3.select("#bw").selectAll("text").remove();
@@ -283,15 +335,12 @@
 		  			// 	.x(385)
 		  			// 	.y(25)
 		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info});
-		  		})
-		  		.on("mouseout", function() {
-		  			d3.select(this).style("fill", "red").attr("r", 3);
-		  		})
-		  		.attr("transform", function(d) {
-		  			return "translate(" + projection([d.lat, d.lon]) + ")";})
-		  		.transition().duration(1500).attr("r", 3);
-		})
-	}
+
+		  			// d3.select("#bimg")
+		  			// 	.data(db.stuff[y].incidents)
+		  			// 	.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
+		  			// 	.attr("height", "50%")
+		  			// 	.attr("width", "50%");
 
 
 </script>
