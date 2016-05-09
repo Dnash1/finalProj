@@ -2,61 +2,73 @@
 <meta charset="utf-8">
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="http://www.d3plus.org/js/d3plus.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<style>
-	.footer{
-	  background: black;
-	  width:50%;
-	  margin-left: auto;
-	  margin-right: auto;
-	  text-align: right;
-	}
 
-	#tibet {
-		fill: black;
-		stroke: black;
-		stroke-dasharray: 5, 2;
-	}
-
-	#mapbox {
-		height: 550px;
-		padding-top: 20px;
-	}
-
-	#biobox {
-		height: 550px;
-		padding-top: 20px;
-		color: white;
-		opacity: 0;
-	}
-
-	#infplt {
-		padding-right: 45px;
-	}
-
-	body {
-		background-color: black;
-
-	}
-
-	.point {
-		fill: red;
-	}
-
-	.nav {
-		display: inline;
-	}
-
-</style>
 <body>
 
-<div class="pure-g main">
+<div id='header'>
+	<h1>Self-immolations in Tibet (2009-2016)</h1>
+</div>
+
+<div id='main'>
+	<div id='mapbox'>
+    
+    <div id='point'></div>
+  </div>
+</div>
+<div id='foot'>
+	<button onclick="updateMap(6)">2009</button>
+	<button onclick="updateMap(5)">2011</button>
+	<button onclick="updateMap(4)">2012</button>
+	<button onclick="updateMap(3)">2013</button>
+	<button onclick="updateMap(2)">2014</button>
+	<button onclick="updateMap(1)">2015</button>
+	<button onclick="updateMap(0)">2016</button>
+</div>
+<div id='biobox'>
+  <div>
+	  <span>
+	  	Name:
+  		<span id="nmplt">
+	  		Example Name
+	  	</span>
+  	</span>
+  	<span>
+  		Age:
+  		<span id="ageplt">
+  			99
+  		</span>
+  	</span>
+  	<span>
+  		Date:
+	  	<span id="dateplt">
+	  		November 5, 2016
+	  	</span>
+	  </span>
+  	<span>
+	  	Status:
+	  	<span id="stplt">
+  			Example status
+	  	</span>
+  	</span>
+	  <span id="infplt">
+	  	Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text. Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text.Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text. Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text. Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text. Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text. Lorem ipsum dolor sit amet. Bla bla bla.. Example filler text.
+	  </span>
+  </div>
+</div>
+
+<div id='desc'>
+	<p>This interactive map is created to honor the memory of the Tibetans who have self-immolated between 2009 and 2016 to protest Chinese rule. Tibet was invaded by China in 1949, and since then 1.2 million Tibetans have died as a direct result of China's occupation. Today, Tibet ranks as one of the most oppressed places on the planet. Following the 2008 uprising, when tens of thousands of Tibetans rose up against Chinese rule, Tibetans began setting themselves on fire to demand freedom and the return of the Dalai Lama. To date, more than 151 Tibetans have self-immolated.</p>
+</div>
+
+<div id='overlay'></div>
+
+<!-- <div class="pure-g main">
 	<div id="mapbox" class="pure-u-16-24"></div>
 	<div id="biobox" class="pure-u-8-24">
 		<span id="nam"></span>
@@ -93,258 +105,10 @@
 			<li class="nav">
 				<button class="pure-button button-xsmall" onclick="updateMap(0)">2016</button>
 			</li>
-			<!-- <li class="nav">
-				<button class="pure-button button-xsmall" onclick="updateMap(7)">All Years</button>
-			</li> -->
 		</ul>
 	</div>
-</div>	
-
-<script>
-	// $width = $("#mapbox").width();
-	// $height = $("#mapbox").height();
-	// console.log(($width / 3) * 2);
-	// console.log($height);
-
-	var margin = {top: 10, left: 10, bottom: 10, right: 10}
-	  , width = parseInt(d3.select('#mapbox').style('width'))
-	  , width = width - margin.left - margin.right
-	  , mapRatio = .5
-	  , height = width * mapRatio;
-
-	// var dataset = [
-	// {date: 1, nav: [{lat: 92, lon: 31},	{lat: 89, lon: 32}, {lat: 89, lon: 35}, {lat: 91, lon: 32}]},
-	// {date: 2, nav: [{lat: 88, lon: 31},	{lat: 89, lon: 34}, {lat: 90, lon: 33}, {lat: 90, lon: 34}]},
-	// {date: 3, nav: [{lat: 94, lon: 31},	{lat: 94, lon: 33}, {lat: 91, lon: 33}, {lat: 91, lon: 34}]}
-	// ]
-
-	// var phtext = {
-	// name: "Name",
-	// age: "Age",
-	// blah: "Blah bloo"
-	// }
-
-    var projection = d3.geo.albers()
-	    .rotate([-95, -1.5])
-	    .center([0, 33.5])
-	    .parallels([50, 60])
-	    .scale(width * 1.75)
-	    .translate([width / 2, height / 2]);
-
-    var path = d3.geo.path()
- 	   .projection(projection);
-
-	var svg = d3.select("#mapbox").append("svg")
-		.attr("id", "mw")
-	    .attr("width", "100%")
-	    .attr("height", "100%")
-	    .append("g");
-
-    // var bio = d3.select("#biobox").append("svg")
-    // 	.attr("id", "bw")
-	   //  .attr("width", "100%")
-	   //  .attr("height", "100%");
-
-	d3.json("finmap.json", function(map) {
-	  svg.append("path")
-	    .datum(topojson.feature(map, map.objects.regions))
-	    .attr("d", path)
-	    .attr("id", "tibet")
-	    .transition().duration(4500).style("stroke", "white")
-	    .transition().duration(4500).style("fill", "#aad4e5");
-	  })
-
-	var biotext = svg.selectAll("text")
-		.data(phtext)
-		.enter();
-
-	function allPoints() {
-		clearMap();
-		for(var i = 4; i < 4; i++) {
-			setPoints(i);
-		}
-		
-
-	}
-
-	function clearMap() {
-		d3.select("svg").selectAll("circle.point")
-			.remove();
-	}
-
-	function updateMap(o) {
-		clearMap();
-		setPoints(o);
-	}
-
-	function setPoints(y) {
-		d3.json("data.json", function(error, db) {
-			if (error) {console.log(error)} else
-			console.log(db);
-			if (y === 7) {
-				for (var i = 0; i < 6; i++) {
-					d3.select("svg").selectAll("circle.point")
-			  		.data(db.stuff[i].incidents)
-			  		.enter()
-			  		.append("circle")
-			  		.attr("class", "point")
-			  		.attr("r", 1)
-			  		.html(function(d) {return d.id} )
-			  		.on("mouseover", function() {
-			  			d3.select(this).style("fill", "black").attr("r", 5)
-			  			var x = this.innerHTML;
-			  			d3.select("#biobox").selectAll("img").remove();
-			  			d3.select("#biobox")
-			  				.style("opacity", 0)
-			  				.transition().duration(1500).style("opacity", 10);
-			  			d3.select("#biobox").insert("img", "#nam")
-			  				.data(db.stuff[i].incidents)
-			  				.attr("src", function(d, i) {return db.stuff[i].incidents[x].img} )
-			  				.attr("alt", " ")
-			  				.attr("class", "pure-img")
-			  				.attr("width", "50%")
-			  				.attr("height", "50%");
-			  			d3.select("#nmplt")
-			  				.data(db.stuff[i].incidents)
-			  				.text(function(d, i) {return db.stuff[i].incidents[x].name});
-			  			d3.select("#ageplt")
-			  				.data(db.stuff[i].incidents)
-			  				.text(function(d, i) {return db.stuff[i].incidents[x].age});
-			  			d3.select("#dateplt")
-			  				.data(db.stuff[i].incidents)
-			  				.text(function(d, i) {return db.stuff[i].incidents[x].date});
-			  			d3.select("#stplt")
-			  				.data(db.stuff[i].incidents)
-			  				.text(function(d, i) {return db.stuff[i].incidents[x].status});
-			  			d3.select("#infplt")
-			  				.data(db.stuff[i].incidents)
-			  				.text(function(d, i) {return db.stuff[i].incidents[x].info});
-			  		})
-			  		.on("mouseout", function() {
-			  			d3.select(this).style("fill", "red").attr("r", 3);
-			  		})
-			  		.attr("transform", function(d) {
-			  			return "translate(" + projection([d.lat, d.lon]) + ")";})
-			  		.transition().duration(1500).attr("r", 3);
-				}
-			} else {
-				d3.select("svg").selectAll("circle.point")
-			  		.data(db.stuff[y].incidents)
-			  		.enter()
-			  		.append("circle")
-			  		.attr("class", "point")
-			  		.attr("r", 1)
-			  		.html(function(d) {return d.id} )
-			  		.on("mouseover", function() {
-			  			d3.select(this).style("fill", "black").attr("r", 5)
-			  			var x = this.innerHTML;
-			  			d3.select("#biobox").selectAll("img").remove();
-			  			d3.select("#biobox")
-			  				.style("opacity", 0)
-			  				.transition().duration(1500).style("opacity", 10);
-			  			d3.select("#biobox").insert("img", "#nam")
-			  				.data(db.stuff[y].incidents)
-			  				.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-			  				.attr("alt", " ")
-			  				.attr("class", "pure-img")
-			  				.attr("width", "50%")
-			  				.attr("height", "50%");
-			  			d3.select("#nmplt")
-			  				.data(db.stuff[y].incidents)
-			  				.text(function(d, i) {return db.stuff[y].incidents[x].name});
-			  			d3.select("#ageplt")
-			  				.data(db.stuff[y].incidents)
-			  				.text(function(d, i) {return db.stuff[y].incidents[x].age});
-			  			d3.select("#dateplt")
-			  				.data(db.stuff[y].incidents)
-			  				.text(function(d, i) {return db.stuff[y].incidents[x].date});
-			  			d3.select("#stplt")
-			  				.data(db.stuff[y].incidents)
-			  				.text(function(d, i) {return db.stuff[y].incidents[x].status});
-			  			d3.select("#infplt")
-			  				.data(db.stuff[y].incidents)
-			  				.text(function(d, i) {return db.stuff[y].incidents[x].info});
-			  		})
-			  		.on("mouseout", function() {
-			  			d3.select(this).style("fill", "red").attr("r", 3);
-			  		})
-			  		.attr("transform", function(d) {
-			  			return "translate(" + projection([d.lat, d.lon]) + ")";})
-			  		.transition().duration(1500).attr("r", 3);
-			  	}
-		})
-	}
-
-
-		  			// d3.select("#bw").selectAll("image").remove();
-		  			// d3.select("#bw").selectAll("text").remove();
-		  			// var x = this.innerHTML;
-		  			// console.log(x);
-		  			// d3.select(this).style("fill", "white")
-		  			// d3.select("#biobox").append("image")
-		  			// 	.html("img")
-		  				// .data(db.stuff[y].incidents)
-		  				// .attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-		  			// 	.attr("width", "50%")
-		  			// 	.attr("height", "50%")
-		  			// 	.attr("opacity", 0)
-		  			// 	.attr("x", 25)
-		  			// 	.transition().duration(1500).attr("opacity", 10);
-		  			// d3.select("#biobox").append("text")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("y", 300)
-		  			// 	.attr("x", 25)
-		  			// 	.attr("opacity", 0)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].name})
-		  			// 	.style("fill", "white")
-		  			// 	.transition().duration(1500).attr("opacity", 10);
-		  			// d3.select("#biobox").append("text")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("y", 320)
-		  			// 	.attr("x", 25)
-		  			// 	.attr("opacity", 0)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].age})
-		  			// 	.style("fill", "white")
-		  			// 	.transition().duration(1500).attr("opacity", 10);
-		  			// d3.select("#biobox").append("text")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("y", 340)
-		  			// 	.attr("x", 25)
-		  			// 	.attr("opacity", 0)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].date})
-		  			// 	.style("fill", "white")
-		  			// 	.transition().duration(1500).attr("opacity", 10);
-		  			// d3.select("#biobox").append("text")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("y", 360)
-		  			// 	.attr("x", 25)
-		  			// 	.attr("opacity", 0)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].status})
-		  			// 	.style("fill", "white")
-		  			// 	.transition().duration(1500).attr("opacity", 10);
-		  			// d3.select("#biobox").append("text")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("y", 385)
-		  			// 	.attr("x", 25)
-		  			// 	.style("opacity", 0)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info})
-		  			// 	.style("fill", "white")
-		  			// 	.transition().duration(1500).style("opacity", 10);
-		  			// d3plus.textwrap()
-		  			// 	.container("#bw")
-		  			// 	.x(385)
-		  			// 	.y(25)
-		  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info});
-
-		  			// d3.select("#bimg")
-		  			// 	.data(db.stuff[y].incidents)
-		  			// 	.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-		  			// 	.attr("height", "50%")
-		  			// 	.attr("width", "50%");
-
-
-</script>
-
+</div>
+ -->
 </body>
 	<script src="main.js"></script>
 </html>
