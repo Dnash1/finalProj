@@ -130,6 +130,16 @@ button
   left: 0;
 }
 
+@media (max-device-width: 1024px) and (orientation: portrait) {
+	#main {
+  		height: 55%;
+  	}
+  	#mapbox {
+  		height: 70%;
+  	}
+}
+
+
 /*.footer{
 	  background: black;
 	  width:50%;
