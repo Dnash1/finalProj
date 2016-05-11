@@ -32,6 +32,10 @@ img
   border-radius: 1px;
 }
 
+#thumbnail {
+	display: none;
+}
+
 button
 {
   border: none;
