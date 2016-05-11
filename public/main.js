@@ -8,7 +8,6 @@ function modal()
   	document.body.className = 'modal';
 }
 
-document.getElementById('point').onclick = modal;
 document.getElementById('overlay').onclick = modal;
 
 // $width = $("#mapbox").width();
@@ -102,10 +101,7 @@ function setPoints(y) {
 		  			d3.select("#biobox").insert("img", "#nam")
 		  				.data(db.stuff[i].incidents)
 		  				.attr("src", function(d, i) {return db.stuff[i].incidents[x].img} )
-		  				.attr("alt", " ")
-		  				.attr("class", "pure-img")
-		  				.attr("width", "50%")
-		  				.attr("height", "50%");
+		  				.attr("alt", "");
 		  			d3.select("#nmplt")
 		  				.data(db.stuff[i].incidents)
 		  				.text(function(d, i) {return db.stuff[i].incidents[x].name});
@@ -151,10 +147,7 @@ function setPoints(y) {
 		  			d3.select("#biobox").insert("img", "#nam")
 		  				.data(db.stuff[y].incidents)
 		  				.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-		  				.attr("alt", " ")
-		  				.attr("class", "pure-img")
-		  				.attr("width", "50%")
-		  				.attr("height", "50%");
+		  				.attr("alt", "");
 		  			d3.select("#nmplt")
 		  				.data(db.stuff[y].incidents)
 		  				.text(function(d, i) {return db.stuff[y].incidents[x].name});
