@@ -93,6 +93,8 @@ function updateMap(o) {
 
 function setPoints(y) {
 	d3.json("data.json", function(error, db) {
+		svg.selectAll(".label")
+		.transition().duration(2500).attr("opacity", .3);
 		if (error) {console.log(error)} else
 		console.log(db);
 		if (y === 7) {

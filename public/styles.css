@@ -17,9 +17,9 @@ body.modal
 }
 .label {
   fill: black;
-  fill-opacity: 0.5;
-  font-size: 20px;
-  font-weight: 300;
+  fill-opacity: 0.6;
+  font-size: 24px;
+  font-weight: 400;
   text-anchor: middle;
 }
 #header {
