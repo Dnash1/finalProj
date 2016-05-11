@@ -15,6 +15,13 @@ body.modal
 {
   overflow: hidden;
 }
+.label {
+  fill: black;
+  fill-opacity: 0.5;
+  font-size: 20px;
+  font-weight: 300;
+  text-anchor: middle;
+}
 #header {
   text-align: center;
 }

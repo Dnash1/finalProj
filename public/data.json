@@ -174,6 +174,12 @@
 
 
 		]}
+	],
+	"places":[
+	{"name": "Sichuan", "lat":102, "lon": 30},
+	{"name": "Ganzu", "lat":96, "lon": 40},
+	{"name": "Qinghai", "lat":95, "lon": 36},
+	{"name": "Tibet", "lat":87, "lon": 32}
 	]
 }
 

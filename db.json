@@ -33,5 +33,9 @@
 	{"id": 5, "name": "Konchok Woeser", "date":"April 24, 2013", "age":"23", "location":"", "status":"Deceased", "lat":"101.5", "lon":"32.5", "img": "http://www.savetibet.org/wp-content/uploads/2013/05/konchok-woeser-01-4242013-150.jpg"},
 	{"id": 6, "name": "Kalkyi", "date":"March 24, 2013", "age":"30", "location":"", "status":"Deceased", "lat":"101.1", "lon":"32.2", "img": "http://www.savetibet.org/wp-content/uploads/2013/06/Kalkyi-3242013-150.jpg"}
 		]}
+	],
+	"places":[
+	{"name": "Tibet", "lat": "102", "lon": "30"}
+
 	]
 }

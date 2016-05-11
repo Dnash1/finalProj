@@ -51,9 +51,26 @@ d3.json("finmap.json", function(map) {
     .transition().duration(4500).style("fill", "#aad4e5");
   })
 
-var biotext = svg.selectAll("text")
-	.data(phtext)
-	.enter();
+// d3.select("svg").selectAll("label")
+// 	.enter()
+// 	.append("text")
+// 	.attr("transform", function(d) { return "translate(" + projection([102, 30]) + ")";})
+//     .attr("dy", ".35em")
+//     .text( function (d) { return "blargh"; });
+d3.json("data.json", function(error, db) {
+	svg.selectAll(".label")
+    .data(db.places)
+  .enter().append("text")
+    .attr("class", "label")
+    .attr("transform", function(d) { return "translate(" + projection([d.lat, d.lon]) + ")"; })
+    .attr("dy", ".35em")
+    .text(function(d) { return d.name; });
+})
+
+
+// var biotext = svg.selectAll("text")
+// 	.data(phtext)
+// 	.enter();
 
 function allPoints() {
 	clearMap();
