@@ -63,7 +63,7 @@ button
 
 button:hover
 {
-  background: orange;
+  background: #802415;
 }
 
 button:active
@@ -74,7 +74,7 @@ button:active
 
 .clicked
 {
-  background: gray;
+  background: #550C00;
   color: white;
 }
 
