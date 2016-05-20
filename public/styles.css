@@ -2,19 +2,22 @@ html
 {
   height: 100%;
 }
+
 body
 {
   margin: 0;
   height: 100%;
   background: #111;
   color: #fff;
-  font-family: sans-serif;
+  font-family: 'Vollkorn', serif;
   font-size: 100%;
 }
+
 body.modal
 {
   overflow: hidden;
 }
+
 .label {
   fill: black;
   fill-opacity: 0.6;
@@ -22,9 +25,11 @@ body.modal
   font-weight: 400;
   text-anchor: middle;
 }
+
 #header {
   text-align: center;
 }
+
 #desc {
 	vertical-align: middle;
 	 max-width: 100%;
@@ -34,6 +39,7 @@ body.modal
   padding-left: 250px;
   padding-right: 250px;
 }
+
 img
 {
   max-width: 100%;
@@ -48,10 +54,28 @@ img
 button
 {
   border: none;
-  background: #eee;
+  color: black;
+  background: red;
   font-size: .9em;
   padding: .5em 1em;
   margin: 0 .5em;
+}
+
+button:hover
+{
+  background: orange;
+}
+
+button:active
+{
+  background: black;
+  color: white;
+}
+
+.clicked
+{
+  background: gray;
+  color: white;
 }
 
 #main
@@ -60,11 +84,13 @@ button
   padding: 2em 0;
   height: 110%;
 }
+
 #mapbox
 {
   position: relative;
   height: 100%;
 }
+
 .point
 {
   fill: red;
@@ -80,10 +106,12 @@ button
   cursor: pointer;
   box-shadow: 1px 1px 1px rgba(0,0,0,.5);
 }
+
 #foot
 {
   text-align: center;
 }
+
 #biobox
 {
   position: fixed;
@@ -102,6 +130,7 @@ button
   overflow: auto;
   text-align: center;
 }
+
 .modal #biobox
 {
   right: 0;
@@ -110,29 +139,35 @@ button
   z-index: 1;
   padding: 2em;
 }
+
 #biobox > img
 {
   max-height: 14em;
   margin-bottom: 2em;
 }
+
 #biobox > div
 {
   text-align: left;
 }
+
 #biobox > div > span
 {
   display: block;
   font-weight: bold;
 }
+
 #biobox > div > span > span
 {
   font-weight: normal;
 }
+
 #biobox #infplt
 {
   font-weight: normal;
   margin: 1em 0
 }
+
 .modal #overlay
 {
   background: rgba(0,0,0,.5);
@@ -152,48 +187,3 @@ button
   		height: 70%;
   	}
 }
-
-
-/*.footer{
-	  background: black;
-	  width:50%;
-	  margin-left: auto;
-	  margin-right: auto;
-	  text-align: right;
-	}
-
-#tibet {
-		fill: black;
-		stroke: black;
-		stroke-dasharray: 5, 2;
-	}
-
-#mapbox {
-		height: 550px;
-		padding-top: 20px;
-	}
-
-#biobox {
-		height: 550px;
-		padding-top: 20px;
-		color: white;
-		opacity: 0;
-	}
-
-#infplt {
-		padding-right: 45px;
-	}
-
-	body {
-		background-color: black;
-
-	}
-
-.point {
-		fill: red;
-	}
-
-.nav {
-		display: inline;
-	}
-*/

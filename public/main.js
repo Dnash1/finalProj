@@ -1,5 +1,10 @@
 console.log("linked");
 
+$('button').click(function(){
+	$('button').removeClass('clicked');
+	$(this).toggleClass('clicked');
+});
+
 function modal()
 {
   if(document.body.className == 'modal')
@@ -9,11 +14,6 @@ function modal()
 }
 
 document.getElementById('overlay').onclick = modal;
-
-// $width = $("#mapbox").width();
-// $height = $("#mapbox").height();
-// console.log(($width / 3) * 2);
-// console.log($height);
 
 var margin = {top: 10, left: 10, bottom: 10, right: 10}
   , width = parseInt(d3.select('#mapbox').style('width'))
@@ -37,11 +37,6 @@ var svg = d3.select("#mapbox").append("svg")
     .attr("height", "100%")
     .append("g");
 
-// var bio = d3.select("#biobox").append("svg")
-// 	.attr("id", "bw")
-   //  .attr("width", "100%")
-   //  .attr("height", "100%");
-
 d3.json("finmap.json", function(map) {
   svg.append("path")
     .datum(topojson.feature(map, map.objects.regions))
@@ -51,12 +46,6 @@ d3.json("finmap.json", function(map) {
     .transition().duration(4500).style("fill", "#aad4e5");
   })
 
-// d3.select("svg").selectAll("label")
-// 	.enter()
-// 	.append("text")
-// 	.attr("transform", function(d) { return "translate(" + projection([102, 30]) + ")";})
-//     .attr("dy", ".35em")
-//     .text( function (d) { return "blargh"; });
 d3.json("data.json", function(error, db) {
 	svg.selectAll(".label")
     .data(db.places)
@@ -68,17 +57,11 @@ d3.json("data.json", function(error, db) {
 })
 
 
-// var biotext = svg.selectAll("text")
-// 	.data(phtext)
-// 	.enter();
-
 function allPoints() {
 	clearMap();
 	for(var i = 4; i < 4; i++) {
 		setPoints(i);
 	}
-	
-
 }
 
 function clearMap() {
@@ -192,71 +175,4 @@ function setPoints(y) {
 		  	}
 	})
 }
-
-
-	  			// d3.select("#bw").selectAll("image").remove();
-	  			// d3.select("#bw").selectAll("text").remove();
-	  			// var x = this.innerHTML;
-	  			// console.log(x);
-	  			// d3.select(this).style("fill", "white")
-	  			// d3.select("#biobox").append("image")
-	  			// 	.html("img")
-	  				// .data(db.stuff[y].incidents)
-	  				// .attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-	  			// 	.attr("width", "50%")
-	  			// 	.attr("height", "50%")
-	  			// 	.attr("opacity", 0)
-	  			// 	.attr("x", 25)
-	  			// 	.transition().duration(1500).attr("opacity", 10);
-	  			// d3.select("#biobox").append("text")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("y", 300)
-	  			// 	.attr("x", 25)
-	  			// 	.attr("opacity", 0)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].name})
-	  			// 	.style("fill", "white")
-	  			// 	.transition().duration(1500).attr("opacity", 10);
-	  			// d3.select("#biobox").append("text")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("y", 320)
-	  			// 	.attr("x", 25)
-	  			// 	.attr("opacity", 0)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].age})
-	  			// 	.style("fill", "white")
-	  			// 	.transition().duration(1500).attr("opacity", 10);
-	  			// d3.select("#biobox").append("text")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("y", 340)
-	  			// 	.attr("x", 25)
-	  			// 	.attr("opacity", 0)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].date})
-	  			// 	.style("fill", "white")
-	  			// 	.transition().duration(1500).attr("opacity", 10);
-	  			// d3.select("#biobox").append("text")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("y", 360)
-	  			// 	.attr("x", 25)
-	  			// 	.attr("opacity", 0)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].status})
-	  			// 	.style("fill", "white")
-	  			// 	.transition().duration(1500).attr("opacity", 10);
-	  			// d3.select("#biobox").append("text")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("y", 385)
-	  			// 	.attr("x", 25)
-	  			// 	.style("opacity", 0)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info})
-	  			// 	.style("fill", "white")
-	  			// 	.transition().duration(1500).style("opacity", 10);
-	  			// d3plus.textwrap()
-	  			// 	.container("#bw")
-	  			// 	.x(385)
-	  			// 	.y(25)
-	  			// 	.text(function(d, i) {return db.stuff[y].incidents[x].info});
-
-	  			// d3.select("#bimg")
-	  			// 	.data(db.stuff[y].incidents)
-	  			// 	.attr("src", function(d, i) {return db.stuff[y].incidents[x].img} )
-	  			// 	.attr("height", "50%")
-	  			// 	.attr("width", "50%");
 
